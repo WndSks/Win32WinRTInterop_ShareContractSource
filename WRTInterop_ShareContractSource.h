@@ -3,7 +3,7 @@
 
 /*
 
-IWRTIShareContract is a helper object that abstracts the details of starting a WinRT share operation.
+IWRTIShareContractSource is a helper object that abstracts the details of starting a WinRT share operation.
 When a share operation is started the callback function must use the IDataRequestedEventArgs parameter to add the data and properties of the thing you are trying to share.
 The ShowShareUI method is asynchronous so the object should not be released until after the callback has been called.
 
