@@ -17,6 +17,8 @@ struct WRTString // A really simple helper class for working with HSTRINGs
 #endif
 static bool WinVer_AtleastWin10()
 {
+	// This example application does not have a manifest with SupportedOS elements
+	// so we cannot use GetVersion[Ex] nor VerifyVersionInfo to detect Windows 10.
 	BYTE verdata[200];
 	UINT cb;
 	VS_FIXEDFILEINFO*pFFI;
@@ -81,6 +83,10 @@ static int OnCreate(HWND hwnd)
 	HWND hCtl = CreateWindowEx(WS_EX_CLIENTEDGE, WC_EDIT, initialText, WS_CHILD|WS_VISIBLE|ES_AUTOHSCROLL, 0, 0, 0, 0, hwnd, (HMENU) IDC_TEXTDATA, 0, 0);
 	if (!hCtl) return -1;
 
+	// IDataTransferManagerInterop exists on Windows 8 but it can only 
+	// be (successfully) used by the default Metro/WinRT web browser.
+	// The ShowShareUIForWindow method will return S_OK but fails to perform the 
+	// share operation in normal desktop applications!
 	const bool canShare = WinVer_AtleastWin10();
 
 	HMENU hMenu = CreateMenu();
