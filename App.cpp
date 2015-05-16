@@ -124,7 +124,12 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 				{
 					if (g_pShare) g_pShare->Release();
 					g_pShare = pShare;
-					hr = g_pShare->ShowShareUI(hwnd, OnProvideShareData, (void*) GetDlgItem(hwnd, IDC_TEXTDATA));
+					void*context = (void*) GetDlgItem(hwnd, IDC_TEXTDATA);
+					hr = g_pShare->ShowShareUI(hwnd, OnProvideShareData, context);
+				}
+				if (FAILED(hr))
+				{
+					MessageBox(hwnd, TEXT("Unable to share!"), 0, MB_APPLMODAL|MB_ICONERROR);
 				}
 			}
 			break;
