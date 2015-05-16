@@ -1,23 +1,27 @@
 #include "WRTInterop_ShareContractSource.h"
 #include "WRTInterop.h"
+#include <InitGUID.h>
+#ifndef __GNUC__
 #include <GuidDef.h> // For IsEqualIID
+#endif
 #include <new>
+
 
 namespace {
 
-MIDL_INTERFACE("A5CAEE9B-8708-49D1-8D36-67D25A8DA00C") IDataTransferManager : public Interop::WRT::IInspectable {
+DEFINE_GUID(IID_IDataTransferManager,0xA5CAEE9B,0x8708,0x49D1,0x8D,0x36,0x67,0xD2,0x5A,0x8D,0xA0,0x0C);
+struct IDataTransferManager : public Interop::WRT::IInspectable {
 	virtual HRESULT STDMETHODCALLTYPE add_DataRequested(IUnknown *eventHandler,Interop::WRT::EventRegistrationToken *eventCookie) = 0;
 	virtual HRESULT STDMETHODCALLTYPE remove_DataRequested(Interop::WRT::EventRegistrationToken eventCookie) = 0;
 	virtual HRESULT STDMETHODCALLTYPE add_TargetApplicationChosen(void *eventHandler, Interop::WRT::EventRegistrationToken *eventCookie) = 0;
 	virtual HRESULT STDMETHODCALLTYPE remove_TargetApplicationChosen(Interop::WRT::EventRegistrationToken eventCookie) = 0;
 };
-#define IID_IDataTransferManager __uuidof(IDataTransferManager) //extern const __declspec(selectany) IID & IID_IDataTransferManager = __uuidof(IDataTransferManager);
 
-MIDL_INTERFACE("3A3DCD6C-3EAB-43DC-BCDE-45671CE800C8") IDataTransferManagerInterop : public IUnknown {
+DEFINE_GUID(IID_IDataTransferManagerInterop,0x3A3DCD6C,0x3EAB,0x43DC,0xBC,0xDE,0x45,0x67,0x1C,0xE8,0x00,0xC8);
+struct IDataTransferManagerInterop : public IUnknown {
 	virtual HRESULT STDMETHODCALLTYPE GetForWindow(HWND appWindow,REFIID riid,void**dataTransferManager) = 0;
 	virtual HRESULT STDMETHODCALLTYPE ShowShareUIForWindow(HWND appWindow) = 0;
 };
-#define IID_IDataTransferManagerInterop __uuidof(IDataTransferManagerInterop)
 
 }
 

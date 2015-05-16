@@ -162,6 +162,9 @@ static int App(HINSTANCE hInst)
 #ifndef _VC_NODEFAULTLIB // Defined in VS2005+ when compiling with /Zl
 int CALLBACK WinMain(HINSTANCE hInst, HINSTANCE hInstOld, LPSTR CommandLine, int ShowMode)
 {
+	UNREFERENCED_PARAMETER(hInstOld);
+	UNREFERENCED_PARAMETER(CommandLine);
+	UNREFERENCED_PARAMETER(ShowMode);
 	return App(hInst);
 }
 #else
@@ -169,16 +172,16 @@ EXTERN_C __declspec(noreturn) void APIENTRY WinMainCRTStartup()
 {
 	ExitProcess(App(GetModuleHandle(0)));
 }
+EXTERN_C int __cdecl memcmp(const void*a, const void*b, size_t cb);
+#pragma function(memcmp)
+EXTERN_C int __cdecl memcmp(const void*a, const void*b, size_t cb) { int cmp = 0; for (size_t i = 0; i < cb; ++i) if (0 != (cmp = ((INT8*)a)[i] - ((INT8*)b)[i])) break; return cmp; }
 #ifdef __cplusplus
 #include <new>
 struct std::nothrow_t const std::nothrow;
-void*__cdecl operator new(std::size_t cb, struct std::nothrow_t const &){ return LocalAlloc(LPTR, cb); }
+void*__cdecl operator new(std::size_t cb, struct std::nothrow_t const &) { return LocalAlloc(LPTR, cb); }
 void __cdecl operator delete(void*p) { LocalFree((HLOCAL) p); }
 #if defined(_MSC_VER) && _MSC_VER <= 1400
 EXTERN_C int __cdecl _purecall(void) { return 0; }
 #endif
 #endif
-EXTERN_C int __cdecl memcmp(const void*a, const void*b, size_t cb);
-#pragma function(memcmp)
-EXTERN_C int __cdecl memcmp(const void*a, const void*b, size_t cb) { int cmp = 0; for (size_t i = 0; i < cb; ++i) if (0 != (cmp = ((INT8*)a)[i] - ((INT8*)b)[i])) break; return cmp; }
 #endif

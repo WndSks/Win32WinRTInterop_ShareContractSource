@@ -3,9 +3,21 @@
 #include <Objbase.h>
 
 
-#if !defined(IID_PPV_ARG) && defined(IID_PPV_ARGS) // We want to support older SDKs and compilers
-#define IID_PPV_ARG(if,pp) IID_PPV_ARGS(pp)
+// We want to support older/3rd-party SDKs and compilers:
+#ifndef DECLSPEC_NOVTABLE
+#	define DECLSPEC_NOVTABLE
 #endif
+#ifndef ARRAYSIZE
+#	define ARRAYSIZE(___A) ( sizeof(___A)/sizeof((___A)[0]) )
+#endif
+#ifndef IID_PPV_ARG
+#	define IID_PPV_ARG(IT,ppT) (IID_##IT),reinterpret_cast<void**>(static_cast<IT**>(ppT))
+#endif
+#ifndef IFACEMETHODIMP
+#	define IFACEMETHODIMP_ STDMETHODIMP_
+#	define IFACEMETHODIMP STDMETHODIMP
+#endif
+
 
 namespace Interop { namespace WRT {
 
